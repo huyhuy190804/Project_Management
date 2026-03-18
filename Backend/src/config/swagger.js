@@ -1,5 +1,7 @@
 import swaggerJsdoc from "swagger-jsdoc";
+import dotenv from "dotenv";
 
+dotenv.config();
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -13,7 +15,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3001",
+        url: process.env.API_URL || "http://localhost:3001/api",
         description: "Development server",
       },
     ],
