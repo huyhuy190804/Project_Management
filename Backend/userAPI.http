@@ -1,0 +1,15 @@
+
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "age": 20
+}
+
+
+###
+
+
+DELETE http://localhost:3001/api/users/69ba971bd68ee12c839f76d6
