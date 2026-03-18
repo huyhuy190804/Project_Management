@@ -1,4 +1,4 @@
-import Project from "../models/ProjectModel.js";
+import Project from "../models/projectModel.js";
 
 // 1. Tạo Project mới
 export const createProject = async (data) => {
