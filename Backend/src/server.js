@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 const allowedOrigins = [
   "https://app.com",
-  "https://admin.app.com",
+  "https://project-management-d174.vercel.app/user",
   "http://localhost:3000"
 ];
 
