@@ -4,27 +4,8 @@ import { Edit, Trash2 } from "lucide-react";
 
 const UserData = ({ users = [], onEdit, onDelete }) => {
   const [deleteId, setDeleteId] = useState(null);
-  // Default sample data
-  const defaultUsers = [
-    {
-      id: 1,
-      name: "Elena Mitchell",
-      email: "elena.m@example.com",
-      initials: "EM",
-      age: 28,
-      createdDate: "22/3/2026",
-    },
-    {
-      id: 2,
-      name: "Julian Weaver",
-      email: "jweaver@studio.co",
-      initials: "JW",
-      age: 34,
-      createdDate: "22/3/2026",
-    },
-  ];
 
-  const displayUsers = users.length > 0 ? users : defaultUsers;
+  const displayUsers = users;
 
   const avatarColors = {
     EM: "bg-blue-100 text-blue-600",

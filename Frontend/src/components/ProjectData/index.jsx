@@ -4,27 +4,8 @@ import { Edit, Trash2 } from "lucide-react";
 
 const ProjectData = ({ projects = [], onEdit, onDelete }) => {
   const [deleteId, setDeleteId] = useState(null);
-  // Default sample data
-  const defaultProjects = [
-    {
-      id: "#PRJ-001",
-      name: "Q4 Editorial Strategy",
-      description: "Planning content distribution for the holiday season.",
-      status: "ACTIVE",
-      statusColor: "bg-green-100 text-green-700",
-      createdDate: "22/3/2026",
-    },
-    {
-      id: "#PRJ-002",
-      name: "Brand Refresh 2024",
-      description: "Redesigning core assets and style guidelines.",
-      status: "COMPLETED",
-      statusColor: "bg-blue-100 text-blue-700",
-      createdDate: "22/3/2026",
-    },
-  ];
 
-  const displayProjects = projects.length > 0 ? projects : defaultProjects;
+  const displayProjects = projects;
 
   const handleDeleteClick = (id) => setDeleteId(id);
   const handleCloseDialog = () => setDeleteId(null);
