@@ -12,7 +12,7 @@ const User = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("/api/users");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
       if (response.data.success) {
         // Map backend _id to id, and createdAt to createdDate for frontend
         const mappedUsers = response.data.data.map((u) => ({

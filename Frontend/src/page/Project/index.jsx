@@ -13,7 +13,7 @@ const Project = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("/api/users");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
       if (response.data.success) {
         setUsers(response.data.data);
       }
@@ -28,9 +28,12 @@ const Project = () => {
       if (response.data.success) {
         const mappedProjects = response.data.data.map((p) => {
           let statusColor = "bg-gray-100 text-gray-700";
-          if (p.status === "pending") statusColor = "bg-yellow-100 text-yellow-700";
-          if (p.status === "in-progress") statusColor = "bg-blue-100 text-blue-700";
-          if (p.status === "completed") statusColor = "bg-green-100 text-green-700";
+          if (p.status === "pending")
+            statusColor = "bg-yellow-100 text-yellow-700";
+          if (p.status === "in-progress")
+            statusColor = "bg-blue-100 text-blue-700";
+          if (p.status === "completed")
+            statusColor = "bg-green-100 text-green-700";
 
           return {
             ...p,
@@ -97,7 +100,11 @@ const Project = () => {
           onAddClick={handleAddClick}
         />
         <main className="flex-1 p-6">
-          <ProjectData projects={projects} onEdit={handleEditClick} onDelete={handleDelete} />
+          <ProjectData
+            projects={projects}
+            onEdit={handleEditClick}
+            onDelete={handleDelete}
+          />
         </main>
       </div>
       <ProjectFormDialog
