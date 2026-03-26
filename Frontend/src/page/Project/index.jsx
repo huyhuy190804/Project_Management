@@ -11,11 +11,11 @@ const Project = () => {
   const [users, setUsers] = useState([]);
   const [editingProject, setEditingProject] = useState(null);
 
-  const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "";
+
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/users`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
       if (response.data.success) {
         setUsers(response.data.data);
       } else if (Array.isArray(response.data)) {
@@ -28,7 +28,7 @@ const Project = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/projects`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/projects`);
       
       let projectsData = [];
       if (response.data.success && Array.isArray(response.data.data)) {

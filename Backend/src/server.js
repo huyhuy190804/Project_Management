@@ -13,9 +13,7 @@ const app = express();
 const allowedOrigins = [
   "https://app.com",
   "https://project-management-d174.vercel.app",
-  "http://localhost:3000",
-  "http://localhost:5173",
-  "http://localhost:4173"
+  "http://localhost:3000"
 ];
 
 app.use(
