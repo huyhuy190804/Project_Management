@@ -11,11 +11,15 @@ const Project = () => {
   const [users, setUsers] = useState([]);
   const [editingProject, setEditingProject] = useState(null);
 
+  const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "";
+
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
+      const response = await axios.get(`${API_URL}/api/users`);
       if (response.data.success) {
         setUsers(response.data.data);
+      } else if (Array.isArray(response.data)) {
+        setUsers(response.data);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -24,26 +28,32 @@ const Project = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/projects`);
-      if (response.data.success) {
-        const mappedProjects = response.data.data.map((p) => {
-          let statusColor = "bg-gray-100 text-gray-700";
-          if (p.status === "pending")
-            statusColor = "bg-yellow-100 text-yellow-700";
-          if (p.status === "in-progress")
-            statusColor = "bg-blue-100 text-blue-700";
-          if (p.status === "completed")
-            statusColor = "bg-green-100 text-green-700";
-
-          return {
-            ...p,
-            id: p._id,
-            statusColor,
-            createdDate: new Date(p.createdAt).toLocaleDateString(),
-          };
-        });
-        setProjects(mappedProjects);
+      const response = await axios.get(`${API_URL}/api/projects`);
+      
+      let projectsData = [];
+      if (response.data.success && Array.isArray(response.data.data)) {
+        projectsData = response.data.data;
+      } else if (Array.isArray(response.data)) {
+        projectsData = response.data;
       }
+
+      const mappedProjects = projectsData.map((p) => {
+        let statusColor = "bg-gray-100 text-gray-700";
+        if (p.status === "pending")
+          statusColor = "bg-yellow-100 text-yellow-700";
+        if (p.status === "in-progress")
+          statusColor = "bg-blue-100 text-blue-700";
+        if (p.status === "completed")
+          statusColor = "bg-green-100 text-green-700";
+
+        return {
+          ...p,
+          id: p._id || p.id,
+          statusColor,
+          createdDate: p.createdAt ? new Date(p.createdAt).toLocaleDateString() : new Date().toLocaleDateString(),
+        };
+      });
+      setProjects(mappedProjects);
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
@@ -71,17 +81,24 @@ const Project = () => {
 
   const handleDelete = async (projectId) => {
     // API docs don't list a DELETE /api/projects/:id, but I'll add the fetchProjects call if we implement it.
-    console.warn("Delete project API not available in backend docs.");
+    try {
+      const res = await axios.delete(`${API_URL}/api/projects/${projectId}`);
+      if (res.data.success !== false) {
+        fetchProjects();
+      }
+    } catch (error) {
+      console.error("Delete project API not available in backend docs.", error);
+    }
   };
 
   const handleFormSubmit = async (formData) => {
     try {
       if (editingProject) {
         // No PUT endpoint according to README, but we'll leave this here.
-        console.warn("Edit project not supported by backend.");
+        await axios.put(`${API_URL}/api/projects/${editingProject.id}`, formData);
       } else {
         // Create
-        await axios.post("/api/projects", formData);
+        await axios.post(`${API_URL}/api/projects`, formData);
       }
       fetchProjects();
       setIsDialogOpen(false);

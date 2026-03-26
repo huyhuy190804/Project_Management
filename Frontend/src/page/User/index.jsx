@@ -9,10 +9,11 @@ const User = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
+  const API_URL = import.meta.env.PROD ? import.meta.env.VITE_API_URL : "";
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
+      const response = await axios.get(`${API_URL}/api/users`);
       
       let usersData = [];
       if (response.data.success && Array.isArray(response.data.data)) {
@@ -52,8 +53,6 @@ const User = () => {
     setEditingUser(user);
     setIsDialogOpen(true);
   };
-
-  const API_URL = import.meta.env.VITE_API_URL || "";
 
   const handleDelete = async (userId) => {
     try {
