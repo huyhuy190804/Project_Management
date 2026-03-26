@@ -82,7 +82,7 @@ const Project = () => {
   const handleDelete = async (projectId) => {
     // API docs don't list a DELETE /api/projects/:id, but I'll add the fetchProjects call if we implement it.
     try {
-      const res = await axios.delete(`${API_URL}/api/projects/${projectId}`);
+      const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}`);
       if (res.data.success !== false) {
         fetchProjects();
       }
@@ -95,10 +95,10 @@ const Project = () => {
     try {
       if (editingProject) {
         // No PUT endpoint according to README, but we'll leave this here.
-        await axios.put(`${API_URL}/api/projects/${editingProject.id}`, formData);
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/projects/${editingProject.id}`, formData);
       } else {
         // Create
-        await axios.post(`${API_URL}/api/projects`, formData);
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/projects`, formData);
       }
       fetchProjects();
       setIsDialogOpen(false);

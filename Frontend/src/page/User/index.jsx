@@ -55,7 +55,7 @@ const User = () => {
 
   const handleDelete = async (userId) => {
     try {
-      const res = await axios.delete(`${API_URL}/api/users/${userId}`);
+      const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${userId}`);
       if (res.data.success !== false) {
         fetchUsers();
       }
@@ -69,10 +69,10 @@ const User = () => {
       let res;
       if (editingUser) {
         // Update
-        res = await axios.put(`${API_URL}/api/users/${editingUser.id}`, formData);
+        res = await axios.put(`${import.meta.env.VITE_API_URL}/api/users/${editingUser.id}`, formData);
       } else {
         // Create
-        res = await axios.post(`${API_URL}/api/users`, formData);
+        res = await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, formData);
       }
       if (res.data.success !== false) {
         fetchUsers();
