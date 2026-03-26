@@ -24,7 +24,7 @@ const Project = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get("/api/projects");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/projects`);
       if (response.data.success) {
         const mappedProjects = response.data.data.map((p) => {
           let statusColor = "bg-gray-100 text-gray-700";

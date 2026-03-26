@@ -13,13 +13,22 @@ const app = express();
 const allowedOrigins = [
   "https://app.com",
   "https://project-management-d174.vercel.app",
-  "http://localhost:3000"
+  "http://localhost:3000",
 ];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Origin not allowed"));
+      }
+    },
+
+    credentials: true,
+  }),
+);
 // Middleware quan trọng: Giúp Express hiểu được dữ liệu JSON
 // Nếu thiếu dòng này, req.body sẽ bị undefined
 app.use(express.json());
