@@ -20,11 +20,7 @@ app.use(
   cors({
     origin: function (origin, callback) {
       if (
-        !origin || 
-        origin.includes("localhost") || 
-        origin.includes("127.0.0.1") || 
-        origin.endsWith(".vercel.app") || 
-        allowedOrigins.includes(origin)
+        origin || allowedOrigins.includes(origin)
       ) {
         callback(null, true);
       } else {
