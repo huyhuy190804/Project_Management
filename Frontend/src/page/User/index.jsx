@@ -13,21 +13,27 @@ const User = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
-      if (response.data.success) {
-        // Map backend _id to id, and createdAt to createdDate for frontend
-        const mappedUsers = response.data.data.map((u) => ({
-          ...u,
-          id: u._id,
-          initials: u.name
-            .split(" ")
-            .map((n) => n[0])
-            .join("")
-            .substring(0, 2)
-            .toUpperCase(),
-          createdDate: new Date(u.createdAt).toLocaleDateString(),
-        }));
-        setUsers(mappedUsers);
+      
+      let usersData = [];
+      if (response.data.success && Array.isArray(response.data.data)) {
+        usersData = response.data.data;
+      } else if (Array.isArray(response.data)) {
+        usersData = response.data;
       }
+
+      // Map backend _id to id, and createdAt to createdDate for frontend
+      const mappedUsers = usersData.map((u) => ({
+        ...u,
+        id: u._id || u.id,
+        initials: (u.name || "U")
+          .split(" ")
+          .map((n) => n[0])
+          .join("")
+          .substring(0, 2)
+          .toUpperCase(),
+        createdDate: u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "",
+      }));
+      setUsers(mappedUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -47,10 +53,12 @@ const User = () => {
     setIsDialogOpen(true);
   };
 
+  const API_URL = import.meta.env.VITE_API_URL || "";
+
   const handleDelete = async (userId) => {
     try {
-      const res = await axios.delete(`/api/users/${userId}`);
-      if (res.data.success) {
+      const res = await axios.delete(`${API_URL}/api/users/${userId}`);
+      if (res.data.success !== false) {
         fetchUsers();
       }
     } catch (error) {
@@ -60,15 +68,18 @@ const User = () => {
 
   const handleFormSubmit = async (formData) => {
     try {
+      let res;
       if (editingUser) {
         // Update
-        await axios.put(`/api/users/${editingUser.id}`, formData);
+        res = await axios.put(`${API_URL}/api/users/${editingUser.id}`, formData);
       } else {
         // Create
-        await axios.post("/api/users", formData);
+        res = await axios.post(`${API_URL}/api/users`, formData);
       }
-      fetchUsers();
-      setIsDialogOpen(false);
+      if (res.data.success !== false) {
+        fetchUsers();
+        setIsDialogOpen(false);
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
